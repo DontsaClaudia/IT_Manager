@@ -2,8 +2,13 @@
 {
     public class ServiceUsers
     {
-        public ServiceUsers() { }
-        public ServiceUsers(string name) { }
+        private readonly HttpClient _httpClient;
+        public ServiceNetworks(HttpClient httpClient)
+        {
+
+            _httpClient = httpClient;
+
+        }
 
     }
 }

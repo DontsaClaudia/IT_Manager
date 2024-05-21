@@ -7,117 +7,77 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GesParck.Data;
 using GesParck.Models;
+using GesParck.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GesParck.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ComputersController : ControllerBase
     {
-        private readonly GesParckContext _context;
+        private readonly GesParckContext _computerService;
 
-        public ComputersController(GesParckContext context)
+        public ComputersController(GesParckContext computerService)
         {
-            _context = context;
+            _computerService = computerService;
         }
 
-        // GET: api/Computers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Computers>>> GetComputers()
+        public async Task<ActionResult<List<Computers>>> GetAllComputers()
         {
-            return await _context.Computers.ToListAsync();
+            var computers = await _computerService.GetAllComputersAsync();
+            return Ok(computers);
         }
 
-        // GET: api/Computers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Computers>> GetComputers(int id)
+        public async Task<ActionResult<Computers>> GetComputerById(int id)
         {
-            var computers = await _context.Computers.FindAsync(id);
-
-            if (computers == null)
+            var computer = await _computerService.GetComputerByIdAsync(id);
+            if (computer == null)
             {
                 return NotFound();
             }
-
-            return computers;
+            return Ok(computer);
         }
 
-        // PUT: api/Computers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutComputers(int id, Computers computers)
-        {
-            if (id != computers.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(computers).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ComputersExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Computers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> PostComputers([FromBody] Computers computers)
+        public async Task<ActionResult<Computers>> CreateComputer(Computers computer)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            // Insérez les données dans votre base de données SQL Server
-            try
-            {
-
-                _context.Computers.Add(computers);
-                    await _context.SaveChangesAsync();
-                
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Une erreur s'est produite lors de l'insertion des données : {ex.Message}");
-            }
+            var createdComputer = await _computerService.CreateComputerAsync(computer);
+            return CreatedAtAction(nameof(GetComputerById), new { id = createdComputer.Id }, createdComputer);
         }
-        
 
-        // DELETE: api/Computers/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteComputers(int id)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateComputer(int id, Computers computer)
         {
-            var computers = await _context.Computers.FindAsync(id);
-            if (computers == null)
+            var updatedComputer = await _computerService.UpdateComputerAsync(id, computer);
+            if (updatedComputer == null)
             {
                 return NotFound();
             }
-
-            _context.Computers.Remove(computers);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool ComputersExists(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteComputer(int id)
         {
-            return _context.Computers.Any(e => e.Id == id);
+            var result = await _computerService.DeleteComputerAsync(id);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+        // Additional functionality: Get Computers by Room
+        [HttpGet("by-room/{roomId}")]
+        public async Task<ActionResult<List<Computers>>> GetComputersByRoom(int roomId)
+        {
+            var computers = await _computerService.GetComputersByRoomAsync(roomId);
+            return Ok(computers);
         }
     }
 }

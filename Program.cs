@@ -8,18 +8,19 @@ using GesPark.Data;
 //using Fluent.Infrastructure.FluentModel;
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-//
-// configuration du service pour la connexion à la base de données
+
+//Add service controllers
+builder.services.AddControllers();
+
+// Service configuration database connexion
 builder.Services.AddDbContext<GesParckContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GesParckContext") ?? throw new InvalidOperationException("Connection string 'GesParckContext' not found.")));
 
-// Add service computers
+// Add Models services
 builder.Services.AddScoped<ServiceComputers>();
+builder.services.AddScoped<ServiceNetwork>();
 
-// Ajout du service pour l'entité users et rule
-/*builder.Services.AddDefaultIdentity<User>(options =>
-                                       options.SignIn.RequireConfirmedAccount = true)*/
-// .AddEntityFrameworkStores<DbContext>();
+// communication with appblazor
 builder.Services.AddRazorPages();
 
 // Add services to the container.
@@ -47,6 +48,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseAuthorization();
 

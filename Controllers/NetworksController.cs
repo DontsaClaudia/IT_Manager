@@ -1,108 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using GesPark.Models;
+using GesPark.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GesPark.Data;
-using GesPark.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GesPark.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class NetworksController : ControllerBase
     {
-        private readonly GesParckContext _context;
+        private readonly ServiceNetwork _networkService;
 
-        public NetworksController(GesParckContext context)
+        public NetworksController(ServiceNetwork networkService)
         {
-            _context = context;
+            _networkService = networkService;
         }
 
-        // GET: api/Networks
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Network>>> GetNetwork()
+        public async Task<ActionResult<List<Network>>> GetAllNetworks()
         {
-            return await _context.Network.ToListAsync();
+            var networks = await _networkService.GetAllNetworksAsync();
+            return Ok(networks);
         }
 
-        // GET: api/Networks/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Network>> GetNetwork(int id)
+        public async Task<ActionResult<Network>> GetNetworkById(int id)
         {
-            var network = await _context.Network.FindAsync(id);
-
+            var network = await _networkService.GetNetworkByIdAsync(id);
             if (network == null)
             {
                 return NotFound();
             }
-
-            return network;
+            return Ok(network);
         }
 
-        // PUT: api/Networks/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutNetwork(int id, Network network)
+        [HttpPost]
+        public async Task<ActionResult<Network>> CreateNetwork(Network network)
         {
-            if (id != network.NetworkId)
-            {
-                return BadRequest();
-            }
+            var createdNetwork = await _networkService.CreateNetworkAsync(network);
+            return CreatedAtAction(nameof(GetNetworkById), new { id = createdNetwork.NetworkId }, createdNetwork);
+        }
 
-            _context.Entry(network).State = EntityState.Modified;
-
-            try
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateNetwork(int id, Network network)
+        {
+            var updatedNetwork = await _networkService.UpdateNetworkAsync(id, network);
+            if (updatedNetwork == null)
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NetworkExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
             return NoContent();
         }
 
-        // POST: api/Networks
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Network>> PostNetwork(Network network)
-        {
-            _context.Network.Add(network);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetNetwork", new { id = network.NetworkId }, network);
-        }
-
-        // DELETE: api/Networks/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNetwork(int id)
         {
-            var network = await _context.Network.FindAsync(id);
-            if (network == null)
+            var result = await _networkService.DeleteNetworkAsync(id);
+            if (!result)
             {
                 return NotFound();
             }
-
-            _context.Network.Remove(network);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool NetworkExists(int id)
+        // Additional functionality: Get Networks by Computer
+        [HttpGet("by-computer/{computerId}")]
+        public async Task<ActionResult<List<Network>>> GetNetworksByComputer(int computerId)
         {
-            return _context.Network.Any(e => e.NetworkId == id);
+            var networks = await _networkService.GetNetworksByComputerAsync(computerId);
+            return Ok(networks);
         }
     }
 }

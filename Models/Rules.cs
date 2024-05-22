@@ -1,4 +1,4 @@
-﻿namespace GesParck.Models
+﻿namespace GesPark.Models
 {
     public class Rules
     {

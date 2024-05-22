@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using GesPark.Services;
 
 
-using GesParck.Data;
+using GesPark.Data;
 //using Fluent.Infrastructure.FluentModel;
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -12,11 +13,13 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddDbContext<GesParckContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("GesParckContext") ?? throw new InvalidOperationException("Connection string 'GesParckContext' not found.")));
 
+// Add service computers
+builder.Services.AddScoped<ServiceComputers>();
 
 // Ajout du service pour l'entité users et rule
 /*builder.Services.AddDefaultIdentity<User>(options =>
                                        options.SignIn.RequireConfirmedAccount = true)*/
-   // .AddEntityFrameworkStores<DbContext>();
+// .AddEntityFrameworkStores<DbContext>();
 builder.Services.AddRazorPages();
 
 // Add services to the container.

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GesParck.Models
+namespace GesPark.Models
 {
     public class Parks
     {

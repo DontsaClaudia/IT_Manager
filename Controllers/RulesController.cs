@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GesParck.Data;
-using GesParck.Models;
+using GesPark.Data;
+using GesPark.Models;
 
-namespace GesParck.Controllers
+namespace GesPark.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using GesParck.Models;
+using GesPark.Models;
 
-namespace GesParck.Data
+namespace GesPark.Data
 {
     public class GesParckContext : DbContext
     {
@@ -18,12 +18,12 @@ namespace GesParck.Data
         {
         }
 
-        public DbSet<GesParck.Models.Users> Users { get; set; } = default!;
-        public DbSet<GesParck.Models.Mapping> Mappings { get; set; } = default!;
-        public DbSet<GesParck.Models.Network> Network { get; set; } = default!;
-        public DbSet<GesParck.Models.Rooms> Rooms { get; set; } = default!;
-        public DbSet<GesParck.Models.Rules> Rules { get; set; } = default!;
-        public DbSet<GesParck.Models.Parks> Parks { get; set; } = default!;
-        public DbSet<GesParck.Models.Computers> Computers { get; set; } = default!;
+        public DbSet<GesPark.Models.Users> Users { get; set; } = default!;
+        public DbSet<GesPark.Models.Mapping> Mappings { get; set; } = default!;
+        public DbSet<GesPark.Models.Network> Network { get; set; } = default!;
+        public DbSet<GesPark.Models.Rooms> Rooms { get; set; } = default!;
+        public DbSet<GesPark.Models.Rules> Rules { get; set; } = default!;
+        public DbSet<GesPark.Models.Parks> Parks { get; set; } = default!;
+        public DbSet<GesPark.Models.Computers> Computers { get; set; } = default!;
     }
 }

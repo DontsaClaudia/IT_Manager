@@ -1,6 +1,6 @@
-@GesParck_HostAddress = http://localhost:5031
+@GesPark_HostAddress = http://localhost:5031
 
-GET {{GesParck_HostAddress}}/weatherforecast/
+GET {{GesPark_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

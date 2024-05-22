@@ -1,26 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GesParck.Data;
-using GesParck.Models;
-using GesParck.Services;
+﻿using GesPark.Models;
+using GesPark.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace GesParck.Controllers
+namespace GesPark.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class ComputersController : ControllerBase
     {
-        private readonly GesParckContext _computerService;
+        private readonly ComputerService _computerService;
 
-        public ComputersController(GesParckContext computerService)
+        public ComputersController(ComputerService computerService)
         {
             _computerService = computerService;
         }

@@ -1,4 +1,4 @@
-namespace GesParck
+namespace GesPark
 {
     public class WeatherForecast
     {

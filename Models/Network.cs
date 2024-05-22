@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GesParck.Models
+namespace GesPark.Models
 {
     public class Network
     {

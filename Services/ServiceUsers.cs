@@ -1,4 +1,4 @@
-﻿namespace GesParck.Services
+﻿namespace GesPark.Services
 {
     public class ServiceUsers
     {

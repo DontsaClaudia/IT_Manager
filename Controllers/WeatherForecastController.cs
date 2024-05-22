@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace GesParck.Controllers
+namespace GesPark.Controllers
 {
     [ApiController]
     [Route("[controller]")]

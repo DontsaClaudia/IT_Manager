@@ -1,16 +1,18 @@
-﻿using GesParck.Models;
+﻿using GesPark.Models;
+using GesPark.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace GesParck.Services
+namespace GesPark.Services
 {
-    public class ComputerService
-    {
-        private readonly ApplicationDbContext _context;
 
-        public ComputerService(ApplicationDbContext context)
+    public class ServiceComputers
+    {
+        private readonly GesParckContext _context;
+
+        public ServiceComputers(GesParckContext context)
         {
             _context = context;
         }
